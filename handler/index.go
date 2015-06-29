@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/seccijr/quinto/web/util"
+	"github.com/seccijr/quintoweb/util"
 	"html/template"
 	"net/http"
 )

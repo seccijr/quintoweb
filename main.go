@@ -6,7 +6,7 @@ package main
 
 import (
 	"flag"
-	"github.com/seccijr/quinto/web/handler"
+	"github.com/seccijr/quintoweb/handler"
 	"io/ioutil"
 	"log"
 	"net"
