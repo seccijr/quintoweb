@@ -1,0 +1,27 @@
+{
+  "name": "quintoweb",
+  "homepage": "https://github.com/seccijr/quintoweb",
+  "authors": [
+    "Carlos I. Pérez Sechi <secci.jr@gmail.com>"
+  ],
+  "description": "Services & Real State Auction Portal",
+  "main": "",
+  "keywords": [
+    "quinto",
+    "auction",
+    "services",
+    "real",
+    "state"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
