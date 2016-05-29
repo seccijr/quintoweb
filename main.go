@@ -6,12 +6,13 @@ package main
 
 import (
 	"github.com/gorilla/context"
+	"github.com/seccijr/quintoweb/handler"
 	"github.com/seccijr/quintoweb/util"
 	"net/http"
 )
 
 func main() {
-	util.RouteInstall()
+	handler.RouteInstall()
 	util.TemplateInstall()
 	http.ListenAndServe(":8080", context.ClearHandler(http.DefaultServeMux))
 }
