@@ -26,6 +26,8 @@ _testmain.go
 *.prof
 
 # idea
-
 .idea/
 quintoweb.iml
+
+# Bower
+public/vendor/
