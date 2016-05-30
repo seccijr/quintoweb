@@ -1,3 +1,5 @@
-{{block "body" .}}
-    {{"indexBody"|trans .Lang}}
-{{end}}
+{{ block "body" . }}
+    {{ range .Ads }}
+    <li><strong>{{ .Title }}</strong>: {{ .Description }}</li>
+    {{ end }}
+{{ end }}

@@ -6,14 +6,9 @@ import (
 	"golang.org/x/text/language"
 	"github.com/seccijr/quintoweb/model"
 	"path/filepath"
-	"fmt"
 	"github.com/seccijr/quintoweb/util"
+	"github.com/seccijr/quintoweb/service"
 )
-
-func Test(args... interface{}) string {
-	fmt.Printf("Called")
-	return "Test"
-}
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	templateFiles := []string{
@@ -24,10 +19,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	funcs := template.FuncMap{
 		"trans": util.TransTemplate,
 	}
-	p := &model.Page{
+	b := model.Base{
 		"indexTitle",
 		[]byte(""),
 		language.MustParse("es"),
+	}
+	p := &model.Index{
+		b,
+		service.GetTopAdsDescOrder(10),
 	}
 	t, _ := template.New(tName).Funcs(funcs).ParseFiles(templateFiles...)
 	t.ExecuteTemplate(w, tName, p)
