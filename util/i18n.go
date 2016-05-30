@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"os"
 	"io/ioutil"
-	"fmt"
 )
 
 type TranslationMap map[string]string
@@ -59,7 +58,6 @@ func GetTranslation(key string, tag language.Tag) (string, error) {
 // Aux function used in order to translate templates
 func TransTemplate(args... interface{}) (string, error) {
 	if length := len(args); length == 2 {
-		fmt.Printf("Called with: \n%+v\n%+v\n", args[0], args[1])
 		tag, tagOk := args[0].(language.Tag)
 		key, keyOk := args[1].(string)
 		if keyOk && tagOk {

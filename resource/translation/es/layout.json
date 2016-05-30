@@ -1,4 +1,8 @@
 {
   "defaultTitle": "Quinto Portal de Subastas",
-  "indexBody": "Cuerpo"
+  "indexBody": "Cuerpo",
+  "brandName": "Quinto",
+  "home": "Inicio",
+  "about": "Acerca de",
+  "contact": "Contacto"
 }
