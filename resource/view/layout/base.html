@@ -1,6 +1,8 @@
 <html>
     <head>
-        <title>{{block "title" .}}{{ "defaultTitle" | trans lang }}{{end}}</title>
+        <title>
+            {{block "title" .}}{{"defaultTitle"}}{{end}}
+        </title>
         {{block "base-style" .}}
         <link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css">
         {{end}}
@@ -18,7 +20,7 @@
                         <li><a href="#about">About</a></li>
                         <li><a href="#contact">Contact</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" 
+                            <a href="#" class="dropdown-toggle"
                                 data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Action</a></li>

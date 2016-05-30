@@ -7,47 +7,23 @@ import (
 	"path/filepath"
 	"os"
 	"io/ioutil"
+	"fmt"
 )
 
 type TranslationMap map[string]string
 
-var translations map[string]TranslationMap
+var translations map[string]TranslationMap = make(map[string]TranslationMap)
 
-func InitTranslations(supported []language.Tag) {
-	translations = make(map[string]TranslationMap)
-	for _, tag := range supported {
-		translations[tag.String()] = make(TranslationMap)
-	}
-}
-
-func AddTranslation(key string, trans string, tag language.Tag) error {
-	if val, ok := translations[tag.String()]; ok {
-		val[key] = trans
-		return nil
-	}
-	return errors.New("No such language tag")
-}
-
-func GetTranslation(key string, tag language.Tag) (string, error) {
-	if val, ok := translations[tag.String()]; ok {
-		return val[key], nil
-	}
-	return "", errors.New("No such language tag")
-}
-
-func AddTranslationMap(languageMap TranslationMap, tag language.Tag) error {
+func addTranslationMap(languageMap TranslationMap, tag language.Tag) error {
 	parent := tag.String()
-	if _, ok := translations[parent]; ok {
-		translations[parent] = languageMap
-		return nil
-	}
-	return errors.New("No such language tag")
+	translations[parent] = languageMap
+	return nil
 }
 
-func ParseTranslations(raw []byte, tag language.Tag) error {
+func parseTranslations(raw []byte, tag language.Tag) error {
 	languageMap := make(TranslationMap)
 	json.Unmarshal(raw, &languageMap)
-	return AddTranslationMap(languageMap, tag)
+	return addTranslationMap(languageMap, tag)
 }
 
 func parseTranslationFile(fullpath string, f os.FileInfo, err error) error {
@@ -58,11 +34,39 @@ func parseTranslationFile(fullpath string, f os.FileInfo, err error) error {
 		if e != nil {
 			return e
 		}
-		return ParseTranslations(file, tag)
+		return parseTranslations(file, tag)
 	}
 	return nil
 }
 
+// Walks through a translation directory looking for
+// json translation files named as LANG.json where
+// LANG must be replaced with the language code corresponding
+// to the translation file
 func ParseTranslationDir(path string) error {
 	return filepath.Walk(path, parseTranslationFile)
+}
+
+// Gets the translation for the specified key in the language
+// represented by tag
+func GetTranslation(key string, tag language.Tag) (string, error) {
+	if val, ok := translations[tag.String()]; ok {
+		return val[key], nil
+	}
+	return "", errors.New("No such language tag")
+}
+
+// Aux function used in order to translate templates
+func TransTemplate(args... interface{}) (string, error) {
+	if length := len(args); length == 2 {
+		fmt.Printf("Called with: \n%+v\n%+v\n", args[0], args[1])
+		tag, tagOk := args[0].(language.Tag)
+		key, keyOk := args[1].(string)
+		if keyOk && tagOk {
+			return GetTranslation(key, tag)
+		} else {
+			return "", errors.New("Bad argument format")
+		}
+	}
+	return "", errors.New("Not enough arguments")
 }

@@ -1,7 +1,3 @@
-// Copyright 2010 The Go Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
-
 package main
 
 import (
@@ -9,9 +5,15 @@ import (
 	"github.com/seccijr/quintoweb/handler"
 	"github.com/seccijr/quintoweb/util"
 	"net/http"
+	"fmt"
 )
 
 func main() {
+	err := util.ParseTranslationDir("resource/translation")
+	if err != nil {
+		fmt.Printf("Could not install translations: %+v\n", err)
+		return
+	}
 	handler.RouteInstall()
 	util.TemplateInstall()
 	http.ListenAndServe(":8080", context.ClearHandler(http.DefaultServeMux))
