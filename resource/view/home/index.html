@@ -1,5 +1,9 @@
 {{ block "body" . }}
-    {{ range .Ads }}
-    <li><strong>{{ .Title }}</strong>: {{ .Description }}</li>
-    {{ end }}
+<div class="jumbotron">
+    <ul>
+        {{ range .Ads }}
+        <li><strong>{{ .Title }}</strong>: {{ .Description }}</li>
+        {{ end }}
+    </ul>
+</div>
 {{ end }}
