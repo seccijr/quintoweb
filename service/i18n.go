@@ -53,6 +53,13 @@ func NewJsonI18n() I18n {
 	return i18n
 }
 
+// Creates a new instance of type JsonI18n
+func NewJsonI18nFeeded(translations map[string]TranslationMap) I18n {
+	i18n := JsonI18n{}
+	i18n.translations = translations
+	return i18n
+}
+
 // Walks through a translation directory looking for
 // json translation files named as LANG.json where
 // LANG must be replaced with the language code corresponding
@@ -64,8 +71,10 @@ func (i18n JsonI18n) ParseTranslationDir(path string) error {
 // Gets the translation for the specified key in the language
 // represented by tag
 func (i18n JsonI18n) GetTranslation(key string, tag language.Tag) string {
-	if val, ok := i18n.translations[tag.String()]; ok {
-		return val[key]
+	if transMap, okMap := i18n.translations[tag.String()]; okMap {
+		if val, okVal := transMap[key]; okVal {
+			return val
+		}
 	}
 	return key
 }
