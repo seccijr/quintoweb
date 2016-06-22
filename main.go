@@ -1,21 +1,24 @@
 package main
 
 import (
-	"github.com/gorilla/context"
-	"github.com/seccijr/quintoweb/handler"
-	"github.com/seccijr/quintoweb/service"
-	"net/http"
 	"fmt"
+	"net/http"
+	"github.com/seccijr/quintoweb/service"
+	"github.com/seccijr/quintoweb/util"
+	"os"
 )
 
 func main() {
+	rootPath := os.Getenv("QUINTO_PATH");
+	if rootPath  == "" {
+		rootPath  = "/etc/root"
+	}
 	i18n := service.NewJsonI18n()
 	err := i18n.ParseTranslationRoot("resource/translation")
 	if err != nil {
 		fmt.Printf("Could not install translations: %+v\n", err)
 		return
 	}
-	home := handler.NewHome(i18n)
-	http.HandleFunc("/", home.Index)
-	http.ListenAndServe(":8080", context.ClearHandler(http.DefaultServeMux))
+	r := util.Router(rootPath, i18n)
+	http.ListenAndServe(":8080", r)
 }

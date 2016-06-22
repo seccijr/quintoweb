@@ -10,17 +10,18 @@ import (
 )
 
 type Home struct {
+	rootPath string
 	i18n service.I18n
 }
 
-func NewHome(i18n service.I18n) Home {
-	return Home{i18n}
+func NewHome(rootPath string, i18n service.I18n) Home {
+	return Home{rootPath, i18n}
 }
 
 func (home Home) Index(w http.ResponseWriter, r *http.Request) {
 	templateFiles := []string{
-		"resource/view/layout/base.html",
-		"resource/view/home/index.html",
+		filepath.Join(home.rootPath, "resource/view/layout/base.html"),
+		filepath.Join(home.rootPath, "resource/view/home/index.html"),
 	}
 	tName := filepath.Base(templateFiles[0])
 	funcs := template.FuncMap{
