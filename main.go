@@ -10,7 +10,7 @@ import (
 
 func main() {
 	i18n := service.NewJsonI18n()
-	err := i18n.ParseTranslationDir("resource/translation")
+	err := i18n.ParseTranslationsRoot("resource/translation")
 	if err != nil {
 		fmt.Printf("Could not install translations: %+v\n", err)
 		return

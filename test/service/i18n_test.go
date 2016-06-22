@@ -74,7 +74,7 @@ func TestParseProjectJsonDir(t *testing.T) {
 	i18n := service.NewJsonI18n()
 
 	// Act
-	err := i18n.ParseTranslationDir("../resource/translation")
+	err := i18n.ParseTranslationsRoot("../resource/translation")
 
 	// Assert
 	if err != nil {
@@ -87,7 +87,7 @@ func XTestParseNonTranslationDir(t *testing.T) {
 	i18n := service.NewJsonI18n()
 
 	// Act
-	err := i18n.ParseTranslationDir("../resource/nontranslation")
+	err := i18n.ParseTranslationsRoot("../resource/nontranslation")
 
 	// Assert
 	if err == nil {

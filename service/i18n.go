@@ -5,12 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"path/filepath"
-	"os"
 	"io/ioutil"
 )
 
 type I18n interface {
-	ParseTranslationDir(path string) error
+	ParseTranslationsRoot(path string) error
 	GetTranslation(key string, tag language.Tag) string
 	TransTemplate(args... interface{}) (string, error)
 }
@@ -33,15 +32,20 @@ func (i18n JsonI18n) parseTranslations(raw []byte, tag language.Tag) error {
 	return i18n.addTranslationMap(languageMap, tag)
 }
 
-func (i18n JsonI18n) parseTranslationFile(fullpath string, f os.FileInfo, err error) error {
-	if (!f.IsDir()) {
-		rawTag := filepath.Base(filepath.Dir(fullpath))
-		tag := language.MustParse(rawTag)
-		file, e := ioutil.ReadFile(fullpath)
-		if e != nil {
-			return e
+func (i18n JsonI18n) parseTranslationDir(lang language.Tag, path string) error {
+	files, _ := ioutil.ReadDir(path)
+	for _, f := range files {
+		if (!f.IsDir() && filepath.Ext(f.Name()) == ".json") {
+			filename := filepath.Join(path, f.Name())
+			raw, err := ioutil.ReadFile(filename)
+			if err != nil {
+				return err
+			}
+			err = i18n.parseTranslations(raw, lang)
+			if err != nil {
+				return err
+			}
 		}
-		return i18n.parseTranslations(file, tag)
 	}
 	return nil
 }
@@ -64,8 +68,20 @@ func NewJsonI18nFeeded(translations map[string]TranslationMap) I18n {
 // json translation files named as LANG.json where
 // LANG must be replaced with the language code corresponding
 // to the translation file
-func (i18n JsonI18n) ParseTranslationDir(path string) error {
-	return filepath.Walk(path, i18n.parseTranslationFile)
+func (i18n JsonI18n) ParseTranslationsRoot(path string) error {
+	files, _ := ioutil.ReadDir(path)
+	for _, f := range files {
+		if f.IsDir() {
+			lang, err := language.Parse(f.Name())
+			if err == nil {
+				dir := filepath.Join(path, f.Name())
+				i18n.parseTranslationDir(lang, dir)
+			} else {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 // Gets the translation for the specified key in the language
