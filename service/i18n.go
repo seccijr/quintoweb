@@ -9,7 +9,7 @@ import (
 )
 
 type I18n interface {
-	ParseTranslationsRoot(path string) error
+	ParseTranslationRoot(path string) error
 	GetTranslation(key string, tag language.Tag) string
 	TransTemplate(args... interface{}) (string, error)
 }
@@ -28,7 +28,10 @@ func (i18n JsonI18n) addTranslationMap(languageMap TranslationMap, tag language.
 
 func (i18n JsonI18n) parseTranslations(raw []byte, tag language.Tag) error {
 	languageMap := make(TranslationMap)
-	json.Unmarshal(raw, &languageMap)
+	err := json.Unmarshal(raw, &languageMap)
+	if err != nil {
+		return err
+	}
 	return i18n.addTranslationMap(languageMap, tag)
 }
 
@@ -68,15 +71,18 @@ func NewJsonI18nFeeded(translations map[string]TranslationMap) I18n {
 // json translation files named as LANG.json where
 // LANG must be replaced with the language code corresponding
 // to the translation file
-func (i18n JsonI18n) ParseTranslationsRoot(path string) error {
+func (i18n JsonI18n) ParseTranslationRoot(path string) error {
 	files, _ := ioutil.ReadDir(path)
 	for _, f := range files {
 		if f.IsDir() {
 			lang, err := language.Parse(f.Name())
 			if err == nil {
 				dir := filepath.Join(path, f.Name())
-				i18n.parseTranslationDir(lang, dir)
+				err = i18n.parseTranslationDir(lang, dir)
 			} else {
+				return err
+			}
+			if err != nil {
 				return err
 			}
 		}
@@ -103,8 +109,8 @@ func (i18n JsonI18n) TransTemplate(args... interface{}) (string, error) {
 		if keyOk && tagOk {
 			return i18n.GetTranslation(key, tag), nil
 		} else {
-			return "", errors.New("Bad argument format")
+			return "", errors.New("i18n: bad argument format")
 		}
 	}
-	return "", errors.New("Not enough arguments")
+	return "", errors.New("i18n: bad number of arguments")
 }
