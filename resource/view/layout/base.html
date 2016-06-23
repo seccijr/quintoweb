@@ -4,8 +4,8 @@
             {{ block "title" . }}{{ "defaultTitle" }}{{ end }}
         </title>
         {{ block "base-style" . }}
-        <link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/navbar-fixed-top.css">
+        <link rel="stylesheet" type="text/css" href="public/vendor/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="public/css/navbar-fixed-top.css">
         {{ end }}
         {{ block "style" . }}{{ end }}
     </head>
@@ -48,8 +48,8 @@
             {{ block "body" . }}{{ end }}
         </div>
         {{ block "base-javascript" . }}
-        <script src="vendor/jquery/dist/jquery.min.js"></script>
-        <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="public/vendor/jquery/dist/jquery.min.js"></script>
+        <script src="public/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
         {{ end }}
         {{ block "javascript" . }}{{ end }}
     </body>

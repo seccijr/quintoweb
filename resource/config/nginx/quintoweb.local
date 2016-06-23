@@ -21,11 +21,11 @@ server {
     listen 80;
     client_max_body_size 20M;
     server_name quintoweb.local;
-    root /var/www/html/quintoweb/public;
+    root /var/www/html/quintoweb;
     error_log /var/log/nginx/quinto_error.log;
     access_log /var/log/nginx/quinto_access.log;
 
-    location / {
+    location /public/ {
         try_files $uri @rewriteapp;
     }
 
