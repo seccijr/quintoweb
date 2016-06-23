@@ -1,6 +1,6 @@
 {
   "name": "quintoweb",
-  "description": "quintoweb",
+  "description": "Trader free exchange",
   "scripts": {
     "postinstall": "bower install"
   },
