@@ -11,6 +11,8 @@ import (
 	"net/http"
 	"path/filepath"
 	"github.com/seccijr/quintoweb/repository"
+	"os"
+	"log"
 )
 
 const (
@@ -20,7 +22,10 @@ const (
 )
 
 func main() {
-
+	port := os.Getenv("PORT")
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
 	root := environment.Root()
 	i18n := service.NewJsonI18n()
 	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
@@ -39,5 +44,5 @@ func main() {
 		return
 	}
 	r := handler.Router(i18n, ad)
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(":" + port, r)
 }
