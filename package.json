@@ -1,0 +1,7 @@
+{
+  "name": "quintoweb",
+  "description": "quintoweb",
+  "scripts": {
+    "postinstall": "bower install"
+  }
+}
