@@ -12,10 +12,11 @@ import (
 
 type Home struct {
 	i18n service.I18n
+	ad   service.Ad
 }
 
-func NewHome(i18n service.I18n) Home {
-	return Home{i18n}
+func NewHome(i18n service.I18n, ad service.Ad) Home {
+	return Home{i18n, ad}
 }
 
 func (home Home) Index(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +36,7 @@ func (home Home) Index(w http.ResponseWriter, r *http.Request) {
 	}
 	p := &model.Index{
 		b,
-		service.GetTopAdsDescOrder(10),
+		home.ad.GetTopDescOrder(10),
 	}
 	t, _ := template.New(tName).Funcs(funcs).ParseFiles(templateFiles...)
 	t.ExecuteTemplate(w, tName, p)

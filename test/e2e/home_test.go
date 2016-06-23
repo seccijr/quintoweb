@@ -1,12 +1,9 @@
 package e2e
 
 import (
-	"github.com/seccijr/quintoweb/environment"
 	"github.com/seccijr/quintoweb/handler"
-	"github.com/seccijr/quintoweb/service"
 	"net/http"
 	"net/http/httptest"
-	"path/filepath"
 	"testing"
 )
 
@@ -15,10 +12,9 @@ var (
 )
 
 func init() {
-	root := environment.Root()
-	i18n := service.NewJsonI18n()
-	i18n.ParseTranslationRoot(filepath.Join(root, "resource/translation"))
-	server = httptest.NewServer(handler.Router(i18n))
+	mockI18n := MockI18n{}
+	mockAdService := MockAdService{}
+	server = httptest.NewServer(handler.Router(mockI18n, mockAdService))
 }
 
 func TestRespondingHomePage(t *testing.T) {

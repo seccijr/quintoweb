@@ -2,12 +2,23 @@ package service
 
 import (
 	"github.com/seccijr/quintoweb/model"
-	"time"
+	"github.com/seccijr/quintoweb/repository"
+	"golang.org/x/text/language"
 )
 
-func GetTopAdsDescOrder(limit int) []model.Ad {
-	return []model.Ad{
-		model.Ad{"Ad 1", "Description 1", "picture1.jpg", time.Now()},
-		model.Ad{"Ad 2", "Description 2", "picture2.jpg", time.Now()},
-	}
+type Ad interface {
+	GetTopDescOrder(limit int) []model.Ad
+}
+
+type AdI15d struct {
+	lang         language.Tag
+	adRepository repository.Ad
+}
+
+func NewAdI15d(adRepository repository.Ad, lang language.Tag) Ad {
+	return AdI15d{lang, adRepository}
+}
+
+func (ad AdI15d) GetTopDescOrder(limit int) []model.Ad {
+	return ad.adRepository.GetTopDescOrder(limit)
 }
