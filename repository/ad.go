@@ -12,12 +12,12 @@ type Ad interface {
 }
 
 type AdPg struct {
-	connection sql.DB
+	db *sql.DB
 	lang       language.Tag
 }
 
-func NewAdPg(connection sql.DB, lang language.Tag) Ad {
-	return AdPg{connection, lang}
+func NewAdPg(db *sql.DB, lang language.Tag) Ad {
+	return AdPg{db, lang}
 }
 
 func (ad AdPg) GetTopDescOrder(limit int) []model.Ad {
