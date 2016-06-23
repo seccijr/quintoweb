@@ -1,26 +1,24 @@
 package e2e
 
 import (
+	"github.com/seccijr/quintoweb/environment"
+	"github.com/seccijr/quintoweb/handler"
+	"github.com/seccijr/quintoweb/service"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"testing"
-	"github.com/seccijr/quintoweb/util"
-	"github.com/seccijr/quintoweb/service"
-	"os"
 )
 
 var (
-	server   *httptest.Server
+	server *httptest.Server
 )
 
 func init() {
-	rootPath := os.Getenv("QUINTO_PATH");
-	if rootPath  == "" {
-		rootPath  = "/etc/root"
-	}
+	root := environment.Root()
 	i18n := service.NewJsonI18n()
-	i18n.ParseTranslationRoot("resource/translation")
-	server = httptest.NewServer(util.Router(rootPath, i18n))
+	i18n.ParseTranslationRoot(filepath.Join(root, "resource/translation"))
+	server = httptest.NewServer(handler.Router(i18n))
 }
 
 func TestRespondingHomePage(t *testing.T) {

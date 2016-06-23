@@ -2,23 +2,21 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"github.com/seccijr/quintoweb/environment"
+	"github.com/seccijr/quintoweb/handler"
 	"github.com/seccijr/quintoweb/service"
-	"github.com/seccijr/quintoweb/util"
-	"os"
+	"net/http"
+	"path/filepath"
 )
 
 func main() {
-	rootPath := os.Getenv("QUINTO_PATH");
-	if rootPath  == "" {
-		rootPath  = "/etc/root"
-	}
+	root := environment.Root()
 	i18n := service.NewJsonI18n()
-	err := i18n.ParseTranslationRoot("resource/translation")
+	err := i18n.ParseTranslationRoot(filepath.Join(root, "resource/translation"))
 	if err != nil {
 		fmt.Printf("Could not install translations: %+v\n", err)
 		return
 	}
-	r := util.Router(rootPath, i18n)
+	r := handler.Router(i18n)
 	http.ListenAndServe(":8080", r)
 }

@@ -1,10 +1,10 @@
 package service
 
 import (
-	"testing"
-	"strings"
-	"golang.org/x/text/language"
 	"github.com/seccijr/quintoweb/service"
+	"golang.org/x/text/language"
+	"strings"
+	"testing"
 )
 
 func TestGetExistingTranslation(t *testing.T) {

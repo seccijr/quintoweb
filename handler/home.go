@@ -1,27 +1,28 @@
 package handler
 
 import (
-	"net/http"
-	"html/template"
-	"golang.org/x/text/language"
+	"github.com/seccijr/quintoweb/environment"
 	"github.com/seccijr/quintoweb/model"
-	"path/filepath"
 	"github.com/seccijr/quintoweb/service"
+	"golang.org/x/text/language"
+	"html/template"
+	"net/http"
+	"path/filepath"
 )
 
 type Home struct {
-	rootPath string
 	i18n service.I18n
 }
 
-func NewHome(rootPath string, i18n service.I18n) Home {
-	return Home{rootPath, i18n}
+func NewHome(i18n service.I18n) Home {
+	return Home{i18n}
 }
 
 func (home Home) Index(w http.ResponseWriter, r *http.Request) {
+	root := environment.Root()
 	templateFiles := []string{
-		filepath.Join(home.rootPath, "resource/view/layout/base.html"),
-		filepath.Join(home.rootPath, "resource/view/home/index.html"),
+		filepath.Join(root, "resource/view/layout/base.html"),
+		filepath.Join(root, "resource/view/home/index.html"),
 	}
 	tName := filepath.Base(templateFiles[0])
 	funcs := template.FuncMap{

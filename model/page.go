@@ -12,10 +12,10 @@ type Base struct {
 }
 
 type Ad struct {
-	Title string
+	Title       string
 	Description string
-	Picture string
-	Deadline time.Time
+	Picture     string
+	Deadline    time.Time
 }
 
 type Index struct {

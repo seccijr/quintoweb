@@ -1,17 +1,17 @@
 package service
 
 import (
-	"golang.org/x/text/language"
 	"encoding/json"
 	"errors"
-	"path/filepath"
+	"golang.org/x/text/language"
 	"io/ioutil"
+	"path/filepath"
 )
 
 type I18n interface {
 	ParseTranslationRoot(path string) error
 	GetTranslation(key string, tag language.Tag) string
-	TransTemplate(args... interface{}) (string, error)
+	TransTemplate(args ...interface{}) (string, error)
 }
 
 type TranslationMap map[string]string
@@ -38,7 +38,7 @@ func (i18n JsonI18n) parseTranslations(raw []byte, tag language.Tag) error {
 func (i18n JsonI18n) parseTranslationDir(lang language.Tag, path string) error {
 	files, _ := ioutil.ReadDir(path)
 	for _, f := range files {
-		if (!f.IsDir() && filepath.Ext(f.Name()) == ".json") {
+		if !f.IsDir() && filepath.Ext(f.Name()) == ".json" {
 			filename := filepath.Join(path, f.Name())
 			raw, err := ioutil.ReadFile(filename)
 			if err != nil {
@@ -102,7 +102,7 @@ func (i18n JsonI18n) GetTranslation(key string, tag language.Tag) string {
 }
 
 // Aux function used in order to translate templates
-func (i18n JsonI18n) TransTemplate(args... interface{}) (string, error) {
+func (i18n JsonI18n) TransTemplate(args ...interface{}) (string, error) {
 	if length := len(args); length == 2 {
 		tag, tagOk := args[0].(language.Tag)
 		key, keyOk := args[1].(string)
