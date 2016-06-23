@@ -3,5 +3,8 @@
   "description": "quintoweb",
   "scripts": {
     "postinstall": "bower install"
+  },
+  "dependencies": {
+    "bower": "latest"
   }
 }
