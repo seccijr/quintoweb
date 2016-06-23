@@ -1,4 +1,4 @@
-package e2e
+package server
 
 import (
 	"github.com/seccijr/quintoweb/handler"
