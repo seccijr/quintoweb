@@ -6,13 +6,13 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/seccijr/quintoweb/environment"
 	"github.com/seccijr/quintoweb/handler"
+	"github.com/seccijr/quintoweb/repository"
 	"github.com/seccijr/quintoweb/service"
 	"golang.org/x/text/language"
-	"net/http"
-	"path/filepath"
-	"github.com/seccijr/quintoweb/repository"
-	"os"
 	"log"
+	"net/http"
+	"os"
+	"path/filepath"
 )
 
 const (
@@ -44,5 +44,5 @@ func main() {
 		return
 	}
 	r := handler.Router(i18n, ad)
-	http.ListenAndServe(":" + port, r)
+	http.ListenAndServe(":"+port, r)
 }

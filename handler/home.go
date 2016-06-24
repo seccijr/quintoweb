@@ -13,13 +13,14 @@ import (
 type Home struct {
 	i18n service.I18n
 	ad   service.Ad
+	lang language.Tag
 }
 
 func NewHome(i18n service.I18n, ad service.Ad) Home {
 	return Home{i18n, ad}
 }
 
-func (home Home) Index(w http.ResponseWriter, r *http.Request) {
+func (home Home) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	root := environment.Root()
 	templateFiles := []string{
 		filepath.Join(root, "resource/view/layout/base.html"),
@@ -32,7 +33,7 @@ func (home Home) Index(w http.ResponseWriter, r *http.Request) {
 	b := model.Base{
 		"indexTitle",
 		[]byte(""),
-		language.MustParse("es"),
+		home.lang,
 	}
 	p := &model.Index{
 		b,
@@ -40,4 +41,8 @@ func (home Home) Index(w http.ResponseWriter, r *http.Request) {
 	}
 	t, _ := template.New(tName).Funcs(funcs).ParseFiles(templateFiles...)
 	t.ExecuteTemplate(w, tName, p)
+}
+
+func (home Home) SetLanguage(lang language.Tag) {
+	home.lang = lang
 }
