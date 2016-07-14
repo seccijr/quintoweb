@@ -129,5 +129,5 @@ func (i18n JsonI18n) Match(t ...language.Tag) (language.Tag, int, language.Confi
 		}
 	}
 	matcher := language.NewMatcher(tags)
-	return matcher.Match(t)
+	return matcher.Match(t...)
 }

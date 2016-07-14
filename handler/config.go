@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"path"
 	"golang.org/x/text/language"
-	"fmt"
 )
 
 type LocalizedHandler interface {
@@ -30,7 +29,7 @@ func (h LangContextHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) 
 }
 
 func NewLangContextHandler(h LocalizedHandler, i18n service.I18n) LangContextHandler {
-	return &LangContextHandler{h, i18n}
+	return LangContextHandler{h, i18n}
 }
 
 func Router(i18n service.I18n, ad service.Ad) *mux.Router {
@@ -42,7 +41,7 @@ func Router(i18n service.I18n, ad service.Ad) *mux.Router {
 
 	home := NewHome(i18n, ad)
 	localizedHome := NewLangContextHandler(home, i18n)
-	r.HandleFunc("/", localizedHome)
+	r.Handle("/", localizedHome)
 
 	return r
 }
