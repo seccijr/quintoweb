@@ -35,14 +35,14 @@ func main() {
 		fmt.Printf("Could connect to database: %+v\n", err)
 		return
 	}
-	defaultLang := language.MustParse("es")
-	adRepository := repository.NewAdPg(db, defaultLang)
-	ad := service.NewAdI15d(adRepository, defaultLang)
 	err = i18n.ParseTranslationRoot(filepath.Join(root, "resource/translation"))
 	if err != nil {
 		fmt.Printf("Could not install translations: %+v\n", err)
 		return
 	}
+	defaultLang := language.MustParse("es")
+	adRepository := repository.NewAdPg(db, defaultLang)
+	ad := service.NewAdI15d(adRepository, defaultLang)
 	r := handler.Router(i18n, ad)
 	http.ListenAndServe(":"+port, r)
 }

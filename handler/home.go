@@ -27,7 +27,7 @@ func (home Home) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		filepath.Join(root, "resource/view/home/index.html"),
 	}
 	tName := filepath.Base(templateFiles[0])
-	funcs := template.FuncMap{
+	funcs := template.FuncMap {
 		"trans": home.i18n.TransTemplate,
 	}
 	b := model.Base{
