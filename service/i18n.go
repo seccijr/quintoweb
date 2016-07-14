@@ -12,6 +12,7 @@ type I18n interface {
 	ParseTranslationRoot(path string) error
 	GetTranslation(key string, tag language.Tag) string
 	TransTemplate(args ...interface{}) (string, error)
+	Match(t ...language.Tag) (language.Tag, int, language.Confidence)
 }
 
 type TranslationMap map[string]string
@@ -113,4 +114,20 @@ func (i18n JsonI18n) TransTemplate(args ...interface{}) (string, error) {
 		}
 	}
 	return "", errors.New("i18n: bad number of arguments")
+}
+
+// Matches possible supported tags from a list os tags
+func (i18n JsonI18n) Match(t ...language.Tag) (language.Tag, int, language.Confidence) {
+	length := len(i18n.translations)
+	tags := make([]language.Tag, length)
+	i := 0;
+	for k := range i18n.translations {
+		tag, err := language.Parse(k)
+		if err == nil {
+			tags[i] = tag
+			i++
+		}
+	}
+	matcher := language.NewMatcher(tags)
+	return matcher.Match(t)
 }

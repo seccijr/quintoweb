@@ -12,8 +12,8 @@ type Ad interface {
 }
 
 type AdPg struct {
-	db *sql.DB
-	lang       language.Tag
+	db   *sql.DB
+	lang language.Tag
 }
 
 func NewAdPg(db *sql.DB, lang language.Tag) Ad {
