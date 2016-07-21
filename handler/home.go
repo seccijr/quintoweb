@@ -16,8 +16,8 @@ type Home struct {
 	lang language.Tag
 }
 
-func NewHome(i18n service.I18n, ad service.Ad) Home {
-	return Home{i18n, ad}
+func NewHome(i18n service.I18n, ad service.Ad, tag language.Tag) Home {
+	return Home{i18n, ad, tag}
 }
 
 func (home Home) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -41,8 +41,4 @@ func (home Home) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	t, _ := template.New(tName).Funcs(funcs).ParseFiles(templateFiles...)
 	t.ExecuteTemplate(w, tName, p)
-}
-
-func (home Home) SetLanguage(lang language.Tag) {
-	home.lang = lang
 }
