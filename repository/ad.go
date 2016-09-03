@@ -1,9 +1,7 @@
 package repository
 
 import (
-	"database/sql"
 	"github.com/seccijr/quintoweb/model"
-	"golang.org/x/text/language"
 	"time"
 )
 
@@ -12,13 +10,8 @@ type Ad interface {
 }
 
 type AdPg struct {
-	db   *sql.DB
-	lang language.Tag
 }
 
-func NewAdPg(db *sql.DB, lang language.Tag) Ad {
-	return AdPg{db, lang}
-}
 
 func (ad AdPg) GetTopDescOrder(limit int) []model.Ad {
 	return []model.Ad{

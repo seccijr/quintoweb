@@ -11,7 +11,7 @@ import (
 type I18n interface {
 	ParseTranslationRoot(path string) error
 	GetTranslation(key string, tag language.Tag) string
-	TransTemplate(args ...interface{}) (string, error)
+	TaggedTransTemplateFunc(tag language.Tag) func(args ...interface{})
 	Match(t ...language.Tag) (language.Tag, int, language.Confidence)
 }
 
@@ -103,17 +103,18 @@ func (i18n JsonI18n) GetTranslation(key string, tag language.Tag) string {
 }
 
 // Aux function used in order to translate templates
-func (i18n JsonI18n) TransTemplate(args ...interface{}) (string, error) {
-	if length := len(args); length == 2 {
-		tag, tagOk := args[0].(language.Tag)
-		key, keyOk := args[1].(string)
-		if keyOk && tagOk {
-			return i18n.GetTranslation(key, tag), nil
-		} else {
-			return "", errors.New("i18n: bad argument format")
+func (i18n JsonI18n) TaggedTransTemplateFunc(tag language.Tag) func(args ...interface{}) (string, error) {
+	return func (args ...interface{}) (string, error) {
+		if length := len(args); length == 2 {
+			key, keyOk := args[0].(string)
+			if keyOk {
+				return i18n.GetTranslation(key, tag), nil
+			} else {
+				return "", errors.New("i18n: bad argument format")
+			}
 		}
+		return "", errors.New("i18n: bad number of arguments")
 	}
-	return "", errors.New("i18n: bad number of arguments")
 }
 
 // Matches possible supported tags from a list os tags

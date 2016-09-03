@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
+	"github.com/facebookgo/inject"
 	"github.com/seccijr/quintoweb/environment"
 	"github.com/seccijr/quintoweb/handler"
 	"github.com/seccijr/quintoweb/repository"
@@ -22,6 +23,7 @@ const (
 )
 
 func main() {
+	var g inject.Graph
 	port := os.Getenv("PORT")
 	if port == "" {
 		log.Fatal("$PORT must be set")
@@ -40,9 +42,10 @@ func main() {
 		fmt.Printf("Could not install translations: %+v\n", err)
 		return
 	}
-	defaultLang := language.MustParse("es")
-	adRepository := repository.NewAdPg(db, defaultLang)
-	ad := service.NewAdI15d(adRepository, defaultLang)
-	r := handler.Router(i18n, ad)
+	g.Provide(
+		&inject.Object{Value: &db},
+		&inject.Object{Value: &i18n},
+	)
+	r := handler.Router()
 	http.ListenAndServe(":"+port, r)
 }
